@@ -40,7 +40,10 @@ def pythononline():
     default = '''print("hello world")'''
     if request.method == "GET":
         return render_template("pythononline.html", user=current_user.id, default=default)
-    if request.form["cmd"] == None or request.form["cmd"].strip() == "":
+    if request.form["script"] == None or request.form["script"].strip() == "":
         return render_template("pythononline.html", output="No command entered", user=current_user.id)
     else:
-        return render_template("pythononline.html", output=request.form["cmd"], user=current_user.id, default=request.form["cmd"])
+        with open("pyonline.py", "w") as f:
+            f.write(request.form["script"])
+        stream = os.popen("py pyonline.py")
+        return render_template("pythononline.html", output=stream.read(), user=current_user.id, default=request.form["script"])
