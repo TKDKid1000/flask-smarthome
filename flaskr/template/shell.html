@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Dashboard</title>
+        <link rel="icon" type="image/png" href="https://i.ibb.co/ZcwR45G/favicon.png"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <style>
+            fieldset {
+              background-color: black;
+            }
+            
+            legend {
+              background-color: gray;
+              color: white;
+              padding: 5px 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="topnav" id="myTopnav">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('lights') }}">Lights</a>
+            <a href="{{ url_for('shell') }}">shell</a>
+        </div>
+        <h1>Command Prompt</h1>
+        <div>
+            <form method="POST" action="shell">
+                <fieldset>
+                    <legend>Command Prompt</legend>
+                    <p style="color:white">{{ output }}</p>
+                    <input type="text" id="cmd" name="cmd" placeholder="Enter Command">
+                </fieldset>
+            </form>
+        </div>
+        <br>
+        <p><a href="{{ url_for('home') }}">Return to Dashboard</a></p>
+        <p>Currently logged in as {{ user }}</p>
+        <p><a href="{{ url_for('logout') }}">logout</a></p>
+    </body>
+</html>

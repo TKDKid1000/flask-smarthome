@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Dashboard</title>
+        <link rel="icon" type="image/png" href="https://i.ibb.co/ZcwR45G/favicon.png"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js"></script>
+        <script>
+            $(function() {
+              $('textarea[data-editor]').each(function() {
+                var textarea = $(this);
+                var mode = textarea.data('editor');
+                var editDiv = $('<div>', {
+                  position: 'absolute',
+                  width: textarea.width(),
+                  height: textarea.height(),
+                  'class': textarea.attr('class')
+                }).insertBefore(textarea);
+                textarea.css('display', 'none');
+                var editor = ace.edit(editDiv[0]);
+                editor.renderer.setShowGutter(textarea.data('gutter'));
+                editor.getSession().setValue(textarea.val());
+                editor.getSession().setMode("ace/mode/" + mode);
+                editor.setTheme("ace/theme/idle_fingers");
+            
+                // copy back to textarea on form submit...
+                textarea.closest('form').submit(function() {
+                  textarea.val(editor.getSession().getValue());
+                })
+              });
+            });
+        </script>
+        <h1>Command Prompt</h1>
+            <form method="POST" action="pythononline">
+                <legend>Command Prompt</legend>
+                <p style="color:white">{{ output }}</p>
+                <textarea data-editor="python" id="cmd" name="cmd" cols="100", rows="20">{{ default }}</textarea>
+                <input type="submit" value="Run">
+            </form>
+        <br>
+        <p><a href="{{ url_for('home') }}">Return to Dashboard</a></p>
+        <p>Currently logged in as {{ user }}</p>
+        <p><a href="{{ url_for('logout') }}">logout</a></p>
+    </body>
+</html>
